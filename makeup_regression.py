@@ -120,6 +120,9 @@ print(f'Without Intercept: Coefficient = {model_without.coef_[0]:.4f}, R² = {mo
 # that predictor, HOLDING ALL OTHER PREDICTORS CONSTANT (ceteris paribus).
 # This is the key advantage over simple regression — we can isolate effects.
 
+# %% create numeric_features dataframe
+numeric_features = df.select_dtypes(include=[np.number]).columns.tolist()
+
 # %%
 # Select a handful of numeric features, that are most correlated with Total Interactions
 # correlation matrix
@@ -128,9 +131,9 @@ corr_matrix = df.corr()
 corr_with_target = corr_matrix['Total Interactions'].abs().sort_values(ascending=False)
 
 # select some kinda middle of the road features
-numeric_features = corr_with_target[5:11].index.tolist()  # Exclude the target variable itself   
+mlr_features = corr_with_target[5:11].index.tolist()  # Exclude the target variable itself   
 
-
+# %%
 # visualize the correlations with a matrix plot
 plt.figure(figsize=(8, 6))
 sns.heatmap(corr_matrix[numeric_features + ['Total Interactions']], annot=True, cmap='coolwarm', center=0)
